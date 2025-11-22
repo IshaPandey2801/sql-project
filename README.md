@@ -1,1 +1,1 @@
-# sql-project
+# sql-tutorial
