@@ -304,4 +304,226 @@ Completion time: 2025-11-12T20:37:12.1420540+05:30
 */
 
 
---- DEFAULT CONSTRAINT:- 
+--- DEFAULT CONSTRAINT:-  It means you are not passing any value in any column and sql will automatically fill that column by default.
+/*
+CREATE TABLE StudentInfo_16thMay
+(
+StudentID INT NOT NULL,  --- NOT NULL is applied to the column that is manadatry to fill.
+FirstName VARCHAR(50),
+LastName VARCHAR(50),
+CountryName Varchar(50) DEFAULT('India')
+)
+
+SELECT * FROM StudentInfo_16thMay
+*/
+
+CREATE TABLE StudentInfo_16thofMay
+(
+StudentID INT NOT NULL,  --- NOT NULL is applied to the column that is manadatry to fill.
+FirstName VARCHAR(50),
+LastName VARCHAR(50),
+CountryName Varchar(50) DEFAULT('India')
+)
+
+SELECT * FROM StudentInfo_16thofMay
+
+INSERT INTO StudentInfo_16thofMay(StudentID, FirstName, LastName, CountryName) VALUES(1, 'SHREYA', 'PANDEY', 'SWITZERLAND') 
+INSERT INTO StudentInfo_16thofMay(StudentID, FirstName, LastName, CountryName) VALUES(2, 'ISHA', 'PANDEY', 'SCOTLAND') 
+INSERT INTO StudentInfo_16thofMay(StudentID, FirstName, LastName, CountryName) VALUES(3, 'PRIYA', 'YADAV', 'NORWAY') 
+INSERT INTO StudentInfo_16thofMay(StudentID, FirstName, LastName, CountryName) VALUES(4, 'MUSKAN', 'TRIPATHI', NULL)
+INSERT INTO StudentInfo_16thofMay(StudentID, FirstName, LastName) VALUES(1, 'SHREYA', 'PANDEY') 
+
+--- output will be:
+/*
+1	1	SHREYA	PANDEY	SWITZERLAND
+2	2	ISHA	PANDEY	SCOTLAND
+3	3	PRIYA	YADAV	NORWAY
+4	4	MUSKAN	TRIPATHI	NULL
+5	1	SHREYA	PANDEY	India      ---- here india inserted by default
+
+*/
+--- What i want in this if someone is not passing country name then India will be filled in country name column by default.
+
+--- If i want to write StudentId with space like Student ID then it should be written in [] square bracket --> [Student ID]
+--- For example:-
+CREATE TABLE [Student Information]
+(
+[Student ID] INT NOT NULL,
+[First Name] VARCHAR(50),
+[LastName] VARCHAR(50),
+[Country Name] VARCHAR(50) 
+)
+
+SELECT * FROM [Student Information]
+
+
+CREATE TABLE OrderInfo_16thMay
+(
+OrderID INT,
+ProductName VARCHAR(50),
+OrderDate DATETIME DEFAULT(GETDATE())
+)
+
+INSERT INTO OrderInfo_16thMay(OrderID,ProductName,OrderDate) VALUES(1,'Fan', '2020-01-01 08:43:12')
+INSERT INTO OrderInfo_16thMay(OrderID,ProductName) VALUES(2,'Mobile')
+
+SELECT * FROM OrderInfo_16thMay
+
+---- Here if we do not provide values for order date then GETDATE written the current time and date by default
+
+
+
+----- CHECK CONSTRAINT:-  --------------------------------
+
+CREATE TABLE VoterInformation_17thMay
+(
+VoterId INT,
+FirstName VARCHAR(50),
+SecondName VARCHAR(50),
+Age INT CHECK(Age>=18)
+)
+
+INSERT INTO VoterInformation_17thMay(VoterId, FirstName, SecondName, Age) VALUES(1,'Shreya', 'Pandey', 23 )
+INSERT INTO VoterInformation_17thMay(VoterId, FirstName, SecondName, Age) VALUES(2,'Richa', 'Pandey', 18)
+INSERT INTO VoterInformation_17thMay(VoterId, FirstName, SecondName, Age) VALUES(3,'shreya', 'Pandey', 17)
+
+SELECT * FROM VoterInformation_17thMay
+
+
+---- UNIQUE: This constraint will not allow any duplicate data. But this will allow a single NULL Value ---------------
+
+CREATE TABLE VoterDetail_17thMay
+(
+VoterId INT UNIQUE,
+FirstName VARCHAR(50),
+SecondName VARCHAR(50),
+Age INT CHECK(Age>=18)
+)
+
+INSERT INTO VoterDetail_17thMay(VoterId, FirstName, SecondName, Age) VALUES(1, 'John', 'Cena', 45)
+INSERT INTO VoterDetail_17thMay(VoterId, FirstName, SecondName, Age) VALUES(1, 'Selena', 'Gomez', 35)
+INSERT INTO VoterDetail_17thMay(VoterId, FirstName, SecondName, Age) VALUES(2, 'Selena', 'Gomez', 35)
+
+SELECT * FROM VoterDetail_17thMay
+
+----- Primary key constraint: It is basically acombination of not null and unique key, The coloumn will  not allow any null value and it will also not allow any duplicate value.---------
+ ---- Note: with unique key we can create more that one unquie in table, more that one column contain unique key but primary key will used only in one column.
+
+ CREATE TABLE StudentInformation_17thMay
+ (
+ StudentId INT PRIMARY KEY,
+ FirstName VARCHAR(50),
+ SecondName VARCHAR(50),
+ )
+
+ INSERT INTO StudentInformation_17thMay(StudentId, FirstName, SecondName)VALUES(1, 'Taylor', 'Swift')
+
+ SELECT * FROM StudentInformation_17thMay
+
+
+
+----- OPERATOR : -----------------------
+/**
+1) = (EQUAL TO)          This is work as a comparison operator and used to do a filter on the basis of single value
+2) <>      
+3) IN
+4) NOT IN
+5) AND
+6) OR
+7) BETWEEN
+8) LIKE
+
+
+
+**/
+
+
+---- 1) EQUAL TO OPERATOR (=): -------
+
+---- When we have to compare single value then we used equal to operator. ----
+
+
+----Ques:1 Write a query to display those employee who are working with departmentID=3?
+
+SELECT * FROM EmployeeDetails WHERE departmentID=1 --- treat this as example
+
+SELECT * FROM EmployeeDetails WHERE EmployeeID=1
+
+---- 2) IN OPERATOR : -------
+---- whenever we have to compare single column with multiple vale then we use IN operator. ---
+
+--- Ques:2 Write a query to display those employee who are working with 3,4 departmentID?
+
+SELECT * FROM EmployeeDetails WHERE departmentID IN(3,4)
+
+
+---- 2) <> OPERATOR : ------- not equal to operator
+----- this operator is used to exclude a single value ----
+
+--- Ques:3 Write a query to display those employee who are not working departmentID 3?
+SELECT * FROM EmployeeDetails WHERE departmentID<>3
+
+
+
+---- 4) NOT IN: -------
+--- This is used to exclude multiple value from single column.
+--- Ques:4 Write a query to display those employee who are not working departmentID 2,3?
+
+SELECT * FROM EmployeeDetails WHERE departmenrID NOT IN (2,3)
+
+
+---- 5) AND Operator: -------
+---- this operator can used to apply more than one filter and it will return the data when all condition will fulfilled.
+
+---- Ques 5: Write a query to display for those employee whose departmentID=2 AND clientId=1?
+
+SELECT * FROM EmployeeDetails WHERE departmentID=2 AND clientID=1
+
+
+---- 6) OR Operator: -------
+---- this operator can used to apply more than one filter and it will return the data when anyone of the condition is fulfilled.
+---- Ques 6: Write a query to diplay those employee who are woorking with departmentID=2 OR clientID=1 ?
+
+SELECT * FROM EmployeeDetails WHERE departmentID=2 OR clientID=1
+
+
+
+---- 7) BETWEEN Operator: -------
+---- when we have to compare range value
+
+---- Ques 7: Write a query to display those employee who are getting salary 40000 to 90000 ?
+SELECT * FROM EmployeeDetails WHERE Salary BETWEEN 40000 AND 90000
+
+---- 8) LIKE Operator: -------
+----- The LIKE operator in SQL is used to search for a specific pattern in a column.
+----- It is mostly used with text (string) data in a WHERE clause.
+---- When we don’t know the exact value but want to match part of it.
+/*
+Common Wildcards Used with LIKE
+
+% → Represents any number of characters
+
+_ → Represents only one character
+*/
+
+--- Ques 8: Write a query to display those employee whose first name start with 'S' ?
+
+SELECT * FROM EmployeeDetails WHERE FirstName LIKE 'S%'
+
+---- Ques 9: Write a query to display those employee whose first name end with 'L' ?
+SELECT * FROM EmployeeDetails WHERE FirstName LIKE '%L'
+
+---- Ques 10: Write a query to display those employee whose first name contain 'A' letter ?
+SELECT * FROM EmployeeDetails WHERE FirstName LIKE '%A%'
+
+
+
+SELECT * FROM EmployeeDetails WHERE Salary LIKE '%4' ----output will be shown whose salary start with 4 
+
+
+
+Write a query to display those employee whose firstname second letter is 'a'?
+
+SELECT * FROM EmployeeDetails WHERE FirstName LIKE '_a%'
+
+--- one underscore represent one character
