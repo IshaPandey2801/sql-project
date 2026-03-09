@@ -4,6 +4,7 @@ I am learning SQL as part of my Data Science studies and practicing different ty
 
 
 **Purpose**
+
 The purpose of this repository is to:
 1) Practice SQL queries
 2) Improve database querying skills
